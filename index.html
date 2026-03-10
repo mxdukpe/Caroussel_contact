@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anaïs — Recherche Alternance 2026</title>
+<title>Anaïs ASSE AKAKPO</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,46 +37,33 @@
 
   .cursor {
     width: 18px; height: 18px;
-    border: 2px solid white;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
+    border: 2px solid white; border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: transform 0.12s ease, background 0.12s ease;
   }
   .cursor.hover { transform: translate(-50%, -50%) scale(2.5); background: rgba(255,255,255,0.2); }
 
   .header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 1.5rem 3rem;
   }
   .logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; opacity: 0.9; }
-  .nav-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; }
+  .nav-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s; }
 
   .carousel-wrapper {
-    position: relative;
-    z-index: 1;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    position: relative; z-index: 1;
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; overflow: hidden;
   }
 
   .category-tag {
-    font-size: 0.6rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    font-size: 0.6rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
     margin-bottom: 1.2rem;
+    transition: opacity 0.2s;
   }
 
   .skill-display { text-align: center; width: 100%; padding: 0 2rem; }
@@ -85,32 +72,26 @@
     font-family: 'Playfair Display', serif;
     font-weight: 900;
     font-size: clamp(3rem, 10vw, 11rem);
-    line-height: 0.88;
-    letter-spacing: -0.03em;
-    color: var(--white);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    will-change: transform, opacity;
-    white-space: nowrap;
+    line-height: 0.88; letter-spacing: -0.03em; color: var(--white);
+    transition: opacity 0.36s ease, transform 0.36s ease;
+    will-change: transform, opacity; white-space: nowrap;
   }
   .skill-name.small   { font-size: clamp(1.8rem, 5.5vw, 6.5rem); white-space: normal; }
   .skill-name.italic  { font-style: italic; }
   .skill-name.outline { -webkit-text-stroke: 2px white; color: transparent; }
 
-  .skill-name.leaving-left   { opacity: 0; transform: translateX(-8%) skewX(-3deg); }
-  .skill-name.leaving-right  { opacity: 0; transform: translateX(8%) skewX(3deg); }
-  .skill-name.entering-left  { opacity: 0; transform: translateX(8%) skewX(3deg); }
-  .skill-name.entering-right { opacity: 0; transform: translateX(-8%) skewX(-3deg); }
+  .skill-name.leaving-left   { opacity: 0; transform: translateX(-7%) skewX(-2deg); }
+  .skill-name.leaving-right  { opacity: 0; transform: translateX(7%) skewX(2deg); }
+  .skill-name.entering-left  { opacity: 0; transform: translateX(7%) skewX(2deg); }
+  .skill-name.entering-right { opacity: 0; transform: translateX(-7%) skewX(-2deg); }
   .skill-name.visible        { opacity: 1; transform: translateX(0) skewX(0); }
 
   .skill-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.8rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    gap: 2rem; margin-top: 1.8rem;
+    opacity: 0; transform: translateY(8px);
+    /* faster: 0.2s instead of 0.4s */
+    transition: opacity 0.3s ease 0.18s, transform 0.3s ease 0.18s;
   }
   .skill-meta.visible { opacity: 1; transform: translateY(0); }
 
@@ -123,18 +104,14 @@
     border-radius: 50px; color: rgba(255,255,255,0.7);
   }
 
-  /* CTA buttons on last slide */
+  /* CTA buttons */
   .cta-links {
-    display: none;
-    gap: 1.2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+    display: none; gap: 1.2rem; justify-content: center;
+    flex-wrap: wrap; margin-top: 2rem;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.2s ease 0.15s, transform 0.2s ease 0.15s;
   }
-  .cta-links.show  { display: flex; }
+  .cta-links.show    { display: flex; }
   .cta-links.visible { opacity: 1; transform: translateY(0); }
 
   .cta-btn {
@@ -147,6 +124,14 @@
   .cta-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
   .cta-btn:hover   { transform: scale(1.05); }
   .cta-btn-outline:hover { border-color: white; }
+
+  /* Section divider flash */
+  .section-flash {
+    position: fixed; inset: 0; background: rgba(255,255,255,0.06);
+    pointer-events: none; z-index: 50;
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .section-flash.show { opacity: 1; }
 
   .nav-arrows {
     position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
@@ -162,20 +147,23 @@
 
   .progress-dots {
     position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 8px; z-index: 100;
+    display: flex; flex-direction: column; gap: 6px; z-index: 100;
+    max-height: 80vh; overflow: hidden;
   }
   .dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    transition: background 0.3s, transform 0.3s; cursor: none;
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: background 0.2s, transform 0.2s; cursor: none;
   }
-  .dot.active { background: white; transform: scale(1.6); }
+  .dot.active { background: white; transform: scale(1.8); }
+  /* section separator dot */
+  .dot.separator { background: rgba(255,255,255,0.08); height: 1px; border-radius: 0; width: 12px; margin: 2px 0; }
 
   .bg-number {
     position: fixed; font-family: 'Playfair Display', serif;
-    font-size: 30vw; font-weight: 900; color: rgba(0,0,0,0.08);
+    font-size: 28vw; font-weight: 900; color: rgba(0,0,0,0.07);
     bottom: -5vw; right: -3vw; pointer-events: none; z-index: 0;
-    line-height: 1; user-select: none;
+    line-height: 1; user-select: none; transition: opacity 0.3s;
   }
 
   .side-text {
@@ -188,6 +176,13 @@
   .progress-bar {
     position: fixed; bottom: 0; left: 0; height: 2px;
     background: rgba(255,255,255,0.5); z-index: 200; transition: none;
+  }
+
+  /* Section indicator line */
+  .section-bar {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: rgba(255,255,255,0.15); z-index: 150;
+    transition: width 0.4s ease;
   }
 
   .keyboard-hint {
@@ -211,10 +206,11 @@
 
 <header class="header">
   <div class="logo">Anaïs ASSE AKAKPO</div>
-  <div class="nav-label">Open to Work — 2026</div>
+  <div class="nav-label" id="navLabel">Skills &amp; Stack</div>
 </header>
 
 <div class="side-text">Développeuse Frontend &amp; Mobile</div>
+<div class="section-flash" id="sectionFlash"></div>
 
 <div class="carousel-wrapper">
   <div class="category-tag" id="categoryTag"></div>
@@ -233,6 +229,7 @@
 
 <div class="bg-number" id="bgNumber">01</div>
 <div class="progress-dots" id="progressDots"></div>
+<div class="section-bar" id="sectionBar"></div>
 
 <div class="nav-arrows">
   <button class="arrow-btn" id="prevBtn">←</button>
@@ -243,18 +240,42 @@
 <div class="progress-bar" id="progressBar"></div>
 
 <script>
+// ─── ALL SLIDES ───────────────────────────────────────────────────
+// section: 'skills' | 'alternance'
 const slides = [
-  { name: "En recherche",        style: "italic",        category: "— Master 2 · Ynov Paris —",              tags: ["Alternance 2026–2027"],               cta: false },
-  { name: "d'alternance",        style: "outline",       category: "— Disponible sept. 2026 —",              tags: ["Dev Mobile", "Web Front", "UI/UX"],   cta: false },
-  { name: "Développeuse",        style: "normal",        category: "— Qui suis-je ? —",                      tags: ["Frontend", "Mobile"],                 cta: false },
-  { name: "Frontend & Mobile",   style: "italic small",  category: "— Qui suis-je ? —",                      tags: ["React.js", "Flutter", "Next.js"],      cta: false },
+  // ── SKILLS ──
+  { name: "React.js",       style: "normal",       category: "— Frontend —",           tags: ["Web", "SPA", "Hooks"],              section: "skills" },
+  { name: "Next.js",        style: "outline",      category: "— Frontend —",           tags: ["SSR", "SSG", "SEO"],                section: "skills" },
+  { name: "Vue.js",         style: "italic",       category: "— Frontend —",           tags: ["Web", "Réactif"],                   section: "skills" },
+  { name: "TypeScript",     style: "normal",       category: "— Langages —",           tags: ["ES6+", "Typage"],                   section: "skills" },
+  { name: "Tailwind",       style: "outline",      category: "— CSS & Design —",       tags: ["Utility", "Responsive"],            section: "skills" },
+  { name: "Flutter",        style: "italic",       category: "— Dev Mobile —",         tags: ["iOS", "Android", "Dart"],           section: "skills" },
+  { name: "React Native",   style: "normal",       category: "— Dev Mobile —",         tags: ["Cross-platform", "JS"],             section: "skills" },
+  { name: "Dart",           style: "outline",      category: "— Langages —",           tags: ["Mobile", "Flutter"],                section: "skills" },
+  { name: "Node.js",        style: "italic",       category: "— Backend & API —",      tags: ["Express", "NestJS"],                section: "skills" },
+  { name: "Firebase",       style: "normal",       category: "— Cloud & BDD —",        tags: ["Auth", "Realtime"],                 section: "skills" },
+  { name: "REST API",       style: "outline",      category: "— Backend & API —",      tags: ["Intégration", "HTTP"],              section: "skills" },
+  { name: "MySQL",          style: "italic",       category: "— Base de données —",    tags: ["SQL", "Relationnel"],               section: "skills" },
+  { name: "Figma",          style: "normal",       category: "— Design UX/UI —",       tags: ["Maquettes", "Prototypage"],         section: "skills" },
+  { name: "UX/UI Design",   style: "italic",       category: "— Design UX/UI —",       tags: ["Centré User", "Ergonomie"],         section: "skills" },
+  { name: "Git & CI/CD",    style: "outline",      category: "— DevOps & Outils —",    tags: ["GitHub", "GitLab", "Actions"],      section: "skills" },
+  { name: "Docker",         style: "normal",       category: "— DevOps & Outils —",    tags: ["Conteneurs", "DevOps"],             section: "skills" },
+  { name: "Agile / Scrum",  style: "italic",       category: "— Méthodes —",           tags: ["Jira", "Trello", "Notion"],         section: "skills" },
+  { name: "Lead Dev",       style: "normal",       category: "— Soft Skills —",        tags: ["Équipe", "Code Review"],            section: "skills" },
 
-  { name: "Parlons",             style: "normal",        category: "— Contactez-moi —",                      tags: [],                                      cta: false },
-  { name: "ensemble",            style: "outline",       category: "— anais.asse.akakpo@gmail.com —",        tags: [],                                      cta: true  },
+  // ── ALTERNANCE ──
+  { name: "En recherche",   style: "italic",       category: "— Master 2 · Ynov Paris —",     tags: ["Alternance 2026–2027"],        section: "alternance", cta: false },
+  { name: "d'alternance",   style: "outline",      category: "— Disponible sept. 2026 —",     tags: ["Dev Mobile", "Web Front", "UI/UX"], section: "alternance", cta: false },
+  { name: "Développeuse",   style: "normal",       category: "— Qui suis-je ? —",             tags: ["Frontend", "Mobile"],          section: "alternance", cta: false },
+  { name: "Frontend & Mobile", style: "italic small", category: "— Qui suis-je ? —",          tags: ["React.js", "Flutter", "Next.js"], section: "alternance", cta: false },
+  { name: "Parlons",        style: "normal",       category: "— Contactez-moi —",             tags: [],                              section: "alternance", cta: false },
+  { name: "ensemble",       style: "outline",      category: "— anais.asse.akakpo@gmail.com —", tags: [],                            section: "alternance", cta: true  },
 ];
 
+const SECTION_LABELS = { skills: "Skills &amp; Stack", alternance: "Open to Work — 2026" };
+const AUTO_DELAY = 2000; // faster auto-advance
+
 let current = 0, animating = false, autoTimer = null;
-const AUTO_DELAY = 3000;
 
 const skillNameEl  = document.getElementById('skillName');
 const categoryTagEl= document.getElementById('categoryTag');
@@ -265,9 +286,12 @@ const bgNumberEl   = document.getElementById('bgNumber');
 const progressBarEl= document.getElementById('progressBar');
 const dotsContainer= document.getElementById('progressDots');
 const ctaLinksEl   = document.getElementById('ctaLinks');
+const navLabelEl   = document.getElementById('navLabel');
+const sectionBarEl = document.getElementById('sectionBar');
+const sectionFlash = document.getElementById('sectionFlash');
 
 // Build dots
-slides.forEach((_, i) => {
+slides.forEach((s, i) => {
   const d = document.createElement('div');
   d.className = 'dot' + (i === 0 ? ' active' : '');
   d.addEventListener('click', () => { goTo(i, i > current ? 'left' : 'right'); resetAuto(); });
@@ -276,6 +300,14 @@ slides.forEach((_, i) => {
 
 function updateDots() {
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function updateSectionBar() {
+  const skillsCount = slides.filter(s => s.section === 'skills').length;
+  const pct = current < skillsCount
+    ? ((current + 1) / skillsCount * 50)
+    : (50 + (current - skillsCount + 1) / (slides.length - skillsCount) * 50);
+  sectionBarEl.style.width = pct + '%';
 }
 
 function applyStyle(el, styleStr) {
@@ -298,6 +330,11 @@ function showMeta(s) {
   }
 }
 
+function flashSection() {
+  sectionFlash.classList.add('show');
+  setTimeout(() => sectionFlash.classList.remove('show'), 200);
+}
+
 function renderSlide(idx) {
   const s = slides[idx];
   categoryTagEl.textContent = s.category;
@@ -305,16 +342,19 @@ function renderSlide(idx) {
   skillNameEl.classList.add('visible');
   skillNameEl.textContent = s.name;
   skillNumberEl.textContent = `${String(idx+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-  skillTagsEl.innerHTML = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  skillTagsEl.innerHTML = (s.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
   bgNumberEl.textContent = String(idx+1).padStart(2,'0');
+  navLabelEl.innerHTML = SECTION_LABELS[s.section];
   showMeta(s);
   updateDots();
+  updateSectionBar();
 }
 
 function goTo(idx, direction = 'left') {
   if (animating || idx === current) return;
   animating = true;
 
+  const crossingSection = slides[idx].section !== slides[current].section;
   skillMetaEl.classList.remove('visible');
   ctaLinksEl.classList.remove('visible', 'show');
 
@@ -323,6 +363,8 @@ function goTo(idx, direction = 'left') {
 
   skillNameEl.classList.remove('visible');
   skillNameEl.classList.add(exitClass);
+
+  if (crossingSection) flashSection();
 
   setTimeout(() => {
     current = idx;
@@ -334,10 +376,12 @@ function goTo(idx, direction = 'left') {
     skillNameEl.textContent = s.name;
 
     categoryTagEl.textContent = s.category;
-    skillNumberEl.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-    skillTagsEl.innerHTML = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+    skillNumberEl.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'00')}`;
+    skillTagsEl.innerHTML = (s.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
     bgNumberEl.textContent = String(current+1).padStart(2,'0');
+    navLabelEl.innerHTML = SECTION_LABELS[s.section];
     updateDots();
+    updateSectionBar();
 
     requestAnimationFrame(() => {
       skillNameEl.classList.remove(enterClass);
@@ -345,7 +389,7 @@ function goTo(idx, direction = 'left') {
       showMeta(s);
       animating = false;
     });
-  }, 340);
+  }, 360);
 }
 
 function next() { goTo((current + 1) % slides.length, 'left'); }
@@ -397,6 +441,7 @@ document.querySelectorAll('button, a, .dot').forEach(el => {
 
 // Init
 renderSlide(0);
+skillMetaEl.classList.add('visible');
 startAuto();
 </script>
 </body>
