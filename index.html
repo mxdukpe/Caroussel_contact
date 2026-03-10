@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anaïs — Recherche Alternance 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #9B1111;
+    --red-light: #C41E1E;
+    --white: #FFFFFF;
+  }
+
+  body {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.13) 2.5px, transparent 2.5px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cursor {
+    width: 18px; height: 18px;
+    border: 2px solid white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .cursor.hover { transform: translate(-50%, -50%) scale(2.5); background: rgba(255,255,255,0.2); }
+
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 3rem;
+  }
+  .logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; opacity: 0.9; }
+  .nav-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; }
+
+  .carousel-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .category-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.2rem;
+  }
+
+  .skill-display { text-align: center; width: 100%; padding: 0 2rem; }
+
+  .skill-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 10vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    will-change: transform, opacity;
+    white-space: nowrap;
+  }
+  .skill-name.small   { font-size: clamp(1.8rem, 5.5vw, 6.5rem); white-space: normal; }
+  .skill-name.italic  { font-style: italic; }
+  .skill-name.outline { -webkit-text-stroke: 2px white; color: transparent; }
+
+  .skill-name.leaving-left   { opacity: 0; transform: translateX(-8%) skewX(-3deg); }
+  .skill-name.leaving-right  { opacity: 0; transform: translateX(8%) skewX(3deg); }
+  .skill-name.entering-left  { opacity: 0; transform: translateX(8%) skewX(3deg); }
+  .skill-name.entering-right { opacity: 0; transform: translateX(-8%) skewX(-3deg); }
+  .skill-name.visible        { opacity: 1; transform: translateX(0) skewX(0); }
+
+  .skill-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.8rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  }
+  .skill-meta.visible { opacity: 1; transform: translateY(0); }
+
+  .skill-number { font-size: 0.6rem; letter-spacing: 0.3em; opacity: 0.4; }
+
+  .skill-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .tag {
+    font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.3); padding: 0.35rem 0.8rem;
+    border-radius: 50px; color: rgba(255,255,255,0.7);
+  }
+
+  /* CTA buttons on last slide */
+  .cta-links {
+    display: none;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+  }
+  .cta-links.show  { display: flex; }
+  .cta-links.visible { opacity: 1; transform: translateY(0); }
+
+  .cta-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
+    text-decoration: none; padding: 0.9rem 1.8rem; border-radius: 50px;
+    cursor: none; transition: transform 0.2s, background 0.2s; display: inline-block;
+  }
+  .cta-btn-white   { background: white; color: var(--red); border: 2px solid white; }
+  .cta-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
+  .cta-btn:hover   { transform: scale(1.05); }
+  .cta-btn-outline:hover { border-color: white; }
+
+  .nav-arrows {
+    position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 1.5rem; z-index: 100;
+  }
+  .arrow-btn {
+    background: none; border: 1.5px solid rgba(255,255,255,0.4); color: white;
+    width: 50px; height: 50px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; cursor: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s; font-size: 1rem;
+  }
+  .arrow-btn:hover { background: rgba(255,255,255,0.15); border-color: white; transform: scale(1.1); }
+
+  .progress-dots {
+    position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 8px; z-index: 100;
+  }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.3s, transform 0.3s; cursor: none;
+  }
+  .dot.active { background: white; transform: scale(1.6); }
+
+  .bg-number {
+    position: fixed; font-family: 'Playfair Display', serif;
+    font-size: 30vw; font-weight: 900; color: rgba(0,0,0,0.08);
+    bottom: -5vw; right: -3vw; pointer-events: none; z-index: 0;
+    line-height: 1; user-select: none;
+  }
+
+  .side-text {
+    position: fixed; left: 2.5rem; top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 0.55rem; letter-spacing: 0.35em;
+    text-transform: uppercase; opacity: 0.35; white-space: nowrap;
+  }
+
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; height: 2px;
+    background: rgba(255,255,255,0.5); z-index: 200; transition: none;
+  }
+
+  .keyboard-hint {
+    position: fixed; bottom: 2.5rem; right: 3rem;
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    text-transform: uppercase; opacity: 0.3;
+  }
+
+  @media (max-width: 768px) {
+    .skill-name { font-size: clamp(2.2rem, 13vw, 5rem); white-space: normal; word-break: break-word; }
+    .skill-name.small { font-size: clamp(1.4rem, 9vw, 3rem); }
+    .header { padding: 1.2rem 1.5rem; }
+    .side-text, .keyboard-hint { display: none; }
+    .progress-dots { right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<header class="header">
+  <div class="logo">Anaïs ASSE AKAKPO</div>
+  <div class="nav-label">Open to Work — 2026</div>
+</header>
+
+<div class="side-text">Développeuse Frontend &amp; Mobile</div>
+
+<div class="carousel-wrapper">
+  <div class="category-tag" id="categoryTag"></div>
+  <div class="skill-display">
+    <div class="skill-name visible" id="skillName"></div>
+  </div>
+  <div class="skill-meta" id="skillMeta">
+    <span class="skill-number" id="skillNumber"></span>
+    <div class="skill-tags" id="skillTags"></div>
+  </div>
+  <div class="cta-links" id="ctaLinks">
+    <a href="mailto:anais.asse.akakpo@gmail.com" class="cta-btn cta-btn-white">Me contacter</a>
+    <a href="https://www.linkedin.com/in/ana%C3%AFs-asse-akakpo/" target="_blank" class="cta-btn cta-btn-outline">LinkedIn →</a>
+  </div>
+</div>
+
+<div class="bg-number" id="bgNumber">01</div>
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="nav-arrows">
+  <button class="arrow-btn" id="prevBtn">←</button>
+  <button class="arrow-btn" id="nextBtn">→</button>
+</div>
+
+<div class="keyboard-hint">← → pour naviguer</div>
+<div class="progress-bar" id="progressBar"></div>
+
+<script>
+const slides = [
+  { name: "En recherche",        style: "italic",        category: "— Master 2 · Ynov Paris —",              tags: ["Alternance 2026–2027"],               cta: false },
+  { name: "d'alternance",        style: "outline",       category: "— Disponible sept. 2026 —",              tags: ["Dev Mobile", "Web Front", "UI/UX"],   cta: false },
+  { name: "Développeuse",        style: "normal",        category: "— Qui suis-je ? —",                      tags: ["Frontend", "Mobile"],                 cta: false },
+  { name: "Frontend & Mobile",   style: "italic small",  category: "— Qui suis-je ? —",                      tags: ["React.js", "Flutter", "Next.js"],      cta: false },
+
+  { name: "Parlons",             style: "normal",        category: "— Contactez-moi —",                      tags: [],                                      cta: false },
+  { name: "ensemble",            style: "outline",       category: "— anais.asse.akakpo@gmail.com —",        tags: [],                                      cta: true  },
+];
+
+let current = 0, animating = false, autoTimer = null;
+const AUTO_DELAY = 3000;
+
+const skillNameEl  = document.getElementById('skillName');
+const categoryTagEl= document.getElementById('categoryTag');
+const skillNumberEl= document.getElementById('skillNumber');
+const skillTagsEl  = document.getElementById('skillTags');
+const skillMetaEl  = document.getElementById('skillMeta');
+const bgNumberEl   = document.getElementById('bgNumber');
+const progressBarEl= document.getElementById('progressBar');
+const dotsContainer= document.getElementById('progressDots');
+const ctaLinksEl   = document.getElementById('ctaLinks');
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => { goTo(i, i > current ? 'left' : 'right'); resetAuto(); });
+  dotsContainer.appendChild(d);
+});
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function applyStyle(el, styleStr) {
+  el.classList.remove('italic', 'outline', 'small');
+  if (styleStr.includes('italic'))  el.classList.add('italic');
+  if (styleStr.includes('outline')) el.classList.add('outline');
+  if (styleStr.includes('small'))   el.classList.add('small');
+}
+
+function showMeta(s) {
+  if (s.cta) {
+    skillMetaEl.classList.remove('visible');
+    skillMetaEl.style.display = 'none';
+    ctaLinksEl.classList.add('show');
+    setTimeout(() => ctaLinksEl.classList.add('visible'), 50);
+  } else {
+    ctaLinksEl.classList.remove('visible', 'show');
+    skillMetaEl.style.display = 'flex';
+    skillMetaEl.classList.add('visible');
+  }
+}
+
+function renderSlide(idx) {
+  const s = slides[idx];
+  categoryTagEl.textContent = s.category;
+  applyStyle(skillNameEl, s.style);
+  skillNameEl.classList.add('visible');
+  skillNameEl.textContent = s.name;
+  skillNumberEl.textContent = `${String(idx+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+  skillTagsEl.innerHTML = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  bgNumberEl.textContent = String(idx+1).padStart(2,'0');
+  showMeta(s);
+  updateDots();
+}
+
+function goTo(idx, direction = 'left') {
+  if (animating || idx === current) return;
+  animating = true;
+
+  skillMetaEl.classList.remove('visible');
+  ctaLinksEl.classList.remove('visible', 'show');
+
+  const exitClass  = direction === 'left' ? 'leaving-left'  : 'leaving-right';
+  const enterClass = direction === 'left' ? 'entering-left' : 'entering-right';
+
+  skillNameEl.classList.remove('visible');
+  skillNameEl.classList.add(exitClass);
+
+  setTimeout(() => {
+    current = idx;
+    const s = slides[current];
+
+    skillNameEl.classList.remove(exitClass, 'italic', 'outline', 'small');
+    skillNameEl.classList.add(enterClass);
+    applyStyle(skillNameEl, s.style);
+    skillNameEl.textContent = s.name;
+
+    categoryTagEl.textContent = s.category;
+    skillNumberEl.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    skillTagsEl.innerHTML = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+    bgNumberEl.textContent = String(current+1).padStart(2,'0');
+    updateDots();
+
+    requestAnimationFrame(() => {
+      skillNameEl.classList.remove(enterClass);
+      skillNameEl.classList.add('visible');
+      showMeta(s);
+      animating = false;
+    });
+  }, 340);
+}
+
+function next() { goTo((current + 1) % slides.length, 'left'); }
+function prev() { goTo((current - 1 + slides.length) % slides.length, 'right'); }
+
+function startAuto() {
+  clearAuto();
+  progressBarEl.style.transition = 'none';
+  progressBarEl.style.width = '0%';
+  requestAnimationFrame(() => {
+    progressBarEl.style.transition = `width ${AUTO_DELAY}ms linear`;
+    progressBarEl.style.width = '100%';
+  });
+  autoTimer = setTimeout(() => { next(); startAuto(); }, AUTO_DELAY);
+}
+
+function clearAuto() {
+  clearTimeout(autoTimer);
+  progressBarEl.style.transition = 'none';
+  progressBarEl.style.width = '0%';
+}
+
+function resetAuto() { clearAuto(); startAuto(); }
+
+document.getElementById('nextBtn').addEventListener('click', () => { next(); resetAuto(); });
+document.getElementById('prevBtn').addEventListener('click', () => { prev(); resetAuto(); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next(); resetAuto(); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { prev(); resetAuto(); }
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); resetAuto(); }
+});
+
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('button, a, .dot').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Init
+renderSlide(0);
+startAuto();
+</script>
+</body>
+</html>
