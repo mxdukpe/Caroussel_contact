@@ -1,448 +1,811 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anaïs ASSE AKAKPO</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anaïs ASSE AKAKPO</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  :root {
-    --red: #9B1111;
-    --red-light: #C41E1E;
-    --white: #FFFFFF;
-  }
+    :root {
+      --bg: #EDE0CC;
+      --bg-light: #E4D4B8;
+      --ink: #3D1F0A;
+      --ink-light: #6B3D1A;
+      --white: #F5ECD8;
+    }
 
-  body {
-    background: var(--red);
-    color: var(--white);
-    font-family: 'Space Mono', monospace;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    cursor: none;
-    position: relative;
-  }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Mono', monospace;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      cursor: none;
+    }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.13) 2.5px, transparent 2.5px);
-    background-size: 28px 28px;
-    pointer-events: none;
-    z-index: 0;
-  }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(90, 50, 20, 0.1) 2.5px, transparent 2.5px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  .cursor {
-    width: 18px; height: 18px;
-    border: 2px solid white; border-radius: 50%;
-    position: fixed; pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.12s ease, background 0.12s ease;
-  }
-  .cursor.hover { transform: translate(-50%, -50%) scale(2.5); background: rgba(255,255,255,0.2); }
+    .cursor {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
 
-  .header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.5rem 3rem;
-  }
-  .logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; opacity: 0.9; }
-  .nav-label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s; }
+    .cursor.hover {
+      transform: translate(-50%, -50%) scale(2.4);
+      background: rgba(61, 31, 10, 0.15);
+    }
 
-  .carousel-wrapper {
-    position: relative; z-index: 1;
-    width: 100vw; height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; overflow: hidden;
-  }
+    /* ── HEADER ── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+    }
 
-  .category-tag {
-    font-size: 0.6rem; letter-spacing: 0.4em;
-    text-transform: uppercase; color: rgba(255,255,255,0.5);
-    margin-bottom: 1.2rem;
-    transition: opacity 0.2s;
-  }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      opacity: 0.8;
+      color: var(--ink);
+    }
 
-  .skill-display { text-align: center; width: 100%; padding: 0 2rem; }
+    .nav-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      color: var(--ink);
+    }
 
-  .skill-name {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(3rem, 10vw, 11rem);
-    line-height: 0.88; letter-spacing: -0.03em; color: var(--white);
-    transition: opacity 0.36s ease, transform 0.36s ease;
-    will-change: transform, opacity; white-space: nowrap;
-  }
-  .skill-name.small   { font-size: clamp(1.8rem, 5.5vw, 6.5rem); white-space: normal; }
-  .skill-name.italic  { font-style: italic; }
-  .skill-name.outline { -webkit-text-stroke: 2px white; color: transparent; }
+    /* ── SLIDES CONTAINER ── */
+    .slides-track {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  .skill-name.leaving-left   { opacity: 0; transform: translateX(-7%) skewX(-2deg); }
-  .skill-name.leaving-right  { opacity: 0; transform: translateX(7%) skewX(2deg); }
-  .skill-name.entering-left  { opacity: 0; transform: translateX(7%) skewX(2deg); }
-  .skill-name.entering-right { opacity: 0; transform: translateX(-7%) skewX(-2deg); }
-  .skill-name.visible        { opacity: 1; transform: translateX(0) skewX(0); }
+    /* each page */
+    .page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 3rem 4rem;
+      opacity: 0;
+      transform: translateX(0);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
 
-  .skill-meta {
-    display: flex; align-items: center; justify-content: center;
-    gap: 2rem; margin-top: 1.8rem;
-    opacity: 0; transform: translateY(8px);
-    /* faster: 0.2s instead of 0.4s */
-    transition: opacity 0.3s ease 0.18s, transform 0.3s ease 0.18s;
-  }
-  .skill-meta.visible { opacity: 1; transform: translateY(0); }
+    .page.active {
+      opacity: 1;
+      transform: translateX(0) skewX(0);
+      pointer-events: all;
+    }
 
-  .skill-number { font-size: 0.6rem; letter-spacing: 0.3em; opacity: 0.4; }
+    .page.exit-left {
+      opacity: 0;
+      transform: translateX(-7%) skewX(-1deg);
+    }
 
-  .skill-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
-  .tag {
-    font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,0.3); padding: 0.35rem 0.8rem;
-    border-radius: 50px; color: rgba(255,255,255,0.7);
-  }
+    .page.exit-right {
+      opacity: 0;
+      transform: translateX(7%) skewX(1deg);
+    }
 
-  /* CTA buttons */
-  .cta-links {
-    display: none; gap: 1.2rem; justify-content: center;
-    flex-wrap: wrap; margin-top: 2rem;
-    opacity: 0; transform: translateY(8px);
-    transition: opacity 0.2s ease 0.15s, transform 0.2s ease 0.15s;
-  }
-  .cta-links.show    { display: flex; }
-  .cta-links.visible { opacity: 1; transform: translateY(0); }
+    .page.enter-left {
+      opacity: 0;
+      transform: translateX(7%) skewX(1deg);
+    }
 
-  .cta-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
-    text-decoration: none; padding: 0.9rem 1.8rem; border-radius: 50px;
-    cursor: none; transition: transform 0.2s, background 0.2s; display: inline-block;
-  }
-  .cta-btn-white   { background: white; color: var(--red); border: 2px solid white; }
-  .cta-btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
-  .cta-btn:hover   { transform: scale(1.05); }
-  .cta-btn-outline:hover { border-color: white; }
+    .page.enter-right {
+      opacity: 0;
+      transform: translateX(-7%) skewX(-1deg);
+    }
 
-  /* Section divider flash */
-  .section-flash {
-    position: fixed; inset: 0; background: rgba(255,255,255,0.06);
-    pointer-events: none; z-index: 50;
-    opacity: 0; transition: opacity 0.15s;
-  }
-  .section-flash.show { opacity: 1; }
+    /* ── PAGE 1 — INTRO ── */
+    .page-intro {
+      text-align: center;
+      gap: 0;
+    }
 
-  .nav-arrows {
-    position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 1.5rem; z-index: 100;
-  }
-  .arrow-btn {
-    background: none; border: 1.5px solid rgba(255,255,255,0.4); color: white;
-    width: 50px; height: 50px; border-radius: 50%; display: flex;
-    align-items: center; justify-content: center; cursor: none;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s; font-size: 1rem;
-  }
-  .arrow-btn:hover { background: rgba(255,255,255,0.15); border-color: white; transform: scale(1.1); }
+    .intro-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: rgba(61, 31, 10, 0.4);
+      margin-bottom: 1.8rem;
+    }
 
-  .progress-dots {
-    position: fixed; right: 2.5rem; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 6px; z-index: 100;
-    max-height: 80vh; overflow: hidden;
-  }
-  .dot {
-    width: 4px; height: 4px; border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    transition: background 0.2s, transform 0.2s; cursor: none;
-  }
-  .dot.active { background: white; transform: scale(1.8); }
-  /* section separator dot */
-  .dot.separator { background: rgba(255,255,255,0.08); height: 1px; border-radius: 0; width: 12px; margin: 2px 0; }
+    .intro-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 11vw, 12rem);
+      line-height: 0.86;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
 
-  .bg-number {
-    position: fixed; font-family: 'Playfair Display', serif;
-    font-size: 28vw; font-weight: 900; color: rgba(0,0,0,0.07);
-    bottom: -5vw; right: -3vw; pointer-events: none; z-index: 0;
-    line-height: 1; user-select: none; transition: opacity 0.3s;
-  }
+    .intro-name .outline {
+      -webkit-text-stroke: 2px var(--ink);
+      color: transparent;
+    }
 
-  .side-text {
-    position: fixed; left: 2.5rem; top: 50%;
-    transform: translateY(-50%) rotate(-90deg);
-    font-size: 0.55rem; letter-spacing: 0.35em;
-    text-transform: uppercase; opacity: 0.35; white-space: nowrap;
-  }
+    .intro-name .italic {
+      font-style: italic;
+    }
 
-  .progress-bar {
-    position: fixed; bottom: 0; left: 0; height: 2px;
-    background: rgba(255,255,255,0.5); z-index: 200; transition: none;
-  }
+    .intro-mastere {
+      margin-top: 2rem;
+      font-size: clamp(0.65rem, 1.4vw, 0.9rem);
+      letter-spacing: 0.12em;
+      color: rgba(61, 31, 10, 0.55);
+      line-height: 1.9;
+    }
 
-  /* Section indicator line */
-  .section-bar {
-    position: fixed; top: 0; left: 0; height: 3px;
-    background: rgba(255,255,255,0.15); z-index: 150;
-    transition: width 0.4s ease;
-  }
+    .intro-mastere strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
 
-  .keyboard-hint {
-    position: fixed; bottom: 2.5rem; right: 3rem;
-    font-size: 0.55rem; letter-spacing: 0.2em;
-    text-transform: uppercase; opacity: 0.3;
-  }
+    .intro-tags {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1.6rem;
+    }
 
-  @media (max-width: 768px) {
-    .skill-name { font-size: clamp(2.2rem, 13vw, 5rem); white-space: normal; word-break: break-word; }
-    .skill-name.small { font-size: clamp(1.4rem, 9vw, 3rem); }
-    .header { padding: 1.2rem 1.5rem; }
-    .side-text, .keyboard-hint { display: none; }
-    .progress-dots { right: 1rem; }
-  }
-</style>
+    .page-skills {
+      gap: 0;
+      width: 100%;
+    }
+
+    .skills-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: rgba(61, 31, 10, 0.4);
+      margin-bottom: 2.5rem;
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .skills-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(61, 31, 10, 0.15);
+    }
+
+    .skills-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(61, 31, 10, 0.1);
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .skill-row.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-row-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 5vw, 5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+
+    .skill-row-name.italic {
+      font-style: italic;
+    }
+
+    .skill-row-name.outline {
+      -webkit-text-stroke: 1.5px var(--ink);
+      color: transparent;
+    }
+
+    .skill-row-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .tag {
+      font-size: 0.48rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: 1px solid rgba(61, 31, 10, 0.25);
+      padding: 0.25rem 0.6rem;
+      border-radius: 50px;
+      color: rgba(61, 31, 10, 0.6);
+    }
+
+    /* ── PAGE 5 — ALTERNANCE ── */
+    .page-alt {
+      text-align: center;
+      gap: 0;
+    }
+
+    .alt-eyebrow {
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(61, 31, 10, 0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .alt-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 8vw, 9rem);
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    .alt-title .outline {
+      -webkit-text-stroke: 2px var(--ink);
+      color: transparent;
+    }
+
+    .alt-title .italic {
+      font-style: italic;
+    }
+
+    .alt-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(0.6rem, 1.2vw, 0.78rem);
+      color: rgba(61, 31, 10, 0.55);
+      line-height: 1.9;
+      max-width: 520px;
+    }
+
+    .alt-sub strong {
+      color: var(--ink);
+    }
+
+    .alt-domains {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1.4rem;
+    }
+
+    .alt-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      border-radius: 50px;
+      cursor: none;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-white {
+      background: var(--ink);
+      color: var(--bg);
+      border: 2px solid var(--ink);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid rgba(61, 31, 10, 0.35);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--ink);
+    }
+
+    .bg-number {
+      position: fixed;
+      font-family: 'Playfair Display', serif;
+      font-size: 28vw;
+      font-weight: 900;
+      color: rgba(90, 50, 20, 0.06);
+      bottom: -5vw;
+      right: -3vw;
+      pointer-events: none;
+      z-index: 0;
+      line-height: 1;
+      user-select: none;
+      transition: opacity 0.4s;
+    }
+
+    .side-text {
+      position: fixed;
+      left: 2.2rem;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 0.52rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      opacity: 0.28;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+
+    .nav-arrows {
+      position: fixed;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1.5rem;
+      z-index: 100;
+    }
+
+    .arrow-btn {
+      background: none;
+      border: 1.5px solid rgba(61, 31, 10, 0.3);
+      color: var(--ink);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      font-size: 1rem;
+    }
+
+    .arrow-btn:hover {
+      background: rgba(61, 31, 10, 0.1);
+      border-color: var(--ink);
+      transform: scale(1.1);
+    }
+
+    .page-dots {
+      position: fixed;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .pdot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(61, 31, 10, 0.2);
+      transition: background 0.15s, transform 0.15s;
+      cursor: none;
+    }
+
+    .pdot.active {
+      background: var(--ink);
+      transform: scale(1.7);
+    }
+
+    .progress-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: rgba(61, 31, 10, 0.3);
+      z-index: 200;
+      transition: none;
+    }
+
+    .section-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(61, 31, 10, 0.12);
+      z-index: 150;
+      transition: width 0.3s ease;
+    }
+
+    .keyboard-hint {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 3rem;
+      font-size: 0.52rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.25;
+      color: var(--ink);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1.2rem 1.5rem;
+      }
+
+      .page {
+        padding: 5rem 1.5rem 4rem;
+      }
+
+      .skill-row-name {
+        font-size: clamp(1.4rem, 8vw, 3rem);
+      }
+
+      .intro-name {
+        font-size: clamp(2.8rem, 15vw, 6rem);
+      }
+
+      .alt-title {
+        font-size: clamp(2rem, 10vw, 5rem);
+      }
+
+      .side-text,
+      .keyboard-hint {
+        display: none;
+      }
+
+      .page-dots {
+        right: 1rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="cursor" id="cursor"></div>
+  <div class="cursor" id="cursor"></div>
 
-<header class="header">
-  <div class="logo">Anaïs ASSE AKAKPO</div>
-  <div class="nav-label" id="navLabel">Skills &amp; Stack</div>
-</header>
+  <header class="header">
+    <div class="logo">Anaïs ASSE AKAKPO</div>
+    <div class="nav-label" id="navLabel">Portfolio</div>
+  </header>
 
-<div class="side-text">Développeuse Frontend &amp; Mobile</div>
-<div class="section-flash" id="sectionFlash"></div>
+  <div class="side-text">Développeuse Frontend &amp; Mobile</div>
+  <div class="bg-number" id="bgNum">01</div>
 
-<div class="carousel-wrapper">
-  <div class="category-tag" id="categoryTag"></div>
-  <div class="skill-display">
-    <div class="skill-name visible" id="skillName"></div>
+  <div class="slides-track" id="track">
+
+    <!-- ══ PAGE 1 — INTRO ══ -->
+    <div class="page page-intro active" id="p0">
+      <p class="intro-eyebrow">— Ynov Campus Paris —</p>
+      <h1 class="intro-name">
+        <span class="italic">Anaïs</span><br>
+        <span class="outline">ASSE</span><br>
+        AKAKPO
+      </h1>
+      <p class="intro-mastere">
+        <strong>Mastère Développement Mobile, Logiciels &amp; IoT</strong><br>
+        Architecture logicielle · DevOps · Applications multi-plateformes
+      </p>
+      <div class="intro-tags">
+        <span class="tag">Flutter</span>
+        <span class="tag">React.js</span>
+        <span class="tag">UI/UX Design</span>
+        <span class="tag">Ynov Paris</span>
+      </div>
+    </div>
+
+    <!-- ══ PAGE 2 — SKILLS #1 ══ -->
+    <div class="page page-skills" id="p1">
+      <div class="skills-label">Frontend &amp; Langages</div>
+      <div class="skills-list">
+        <div class="skill-row">
+          <span class="skill-row-name italic">React.js</span>
+          <div class="skill-row-tags"><span class="tag">SPA</span><span class="tag">Hooks</span><span
+              class="tag">Next.js</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">TypeScript</span>
+          <div class="skill-row-tags"><span class="tag">ES6+</span><span class="tag">Typage</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name">Vue.js</span>
+          <div class="skill-row-tags"><span class="tag">Web</span><span class="tag">Réactif</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name italic">Tailwind CSS</span>
+          <div class="skill-row-tags"><span class="tag">Utility</span><span class="tag">Responsive</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">UX/UI Design</span>
+          <div class="skill-row-tags"><span class="tag">Figma</span><span class="tag">Prototypage</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE 3 — SKILLS #2 ══ -->
+    <div class="page page-skills" id="p2">
+      <div class="skills-label">Mobile &amp; Cloud</div>
+      <div class="skills-list">
+        <div class="skill-row">
+          <span class="skill-row-name italic">Flutter</span>
+          <div class="skill-row-tags"><span class="tag">iOS</span><span class="tag">Android</span><span
+              class="tag">Dart</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">React Native</span>
+          <div class="skill-row-tags"><span class="tag">Cross-platform</span><span class="tag">JS</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name">Firebase</span>
+          <div class="skill-row-tags"><span class="tag">Auth</span><span class="tag">Realtime</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name italic">Node.js</span>
+          <div class="skill-row-tags"><span class="tag">Express</span><span class="tag">NestJS</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">REST API</span>
+          <div class="skill-row-tags"><span class="tag">Intégration</span><span class="tag">HTTP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE 4 — SKILLS #3 ══ -->
+    <div class="page page-skills" id="p3">
+      <div class="skills-label">DevOps &amp; Méthodes</div>
+      <div class="skills-list">
+        <div class="skill-row">
+          <span class="skill-row-name italic">Git &amp; CI/CD</span>
+          <div class="skill-row-tags"><span class="tag">GitHub</span><span class="tag">GitLab</span><span
+              class="tag">Actions</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">Docker</span>
+          <div class="skill-row-tags"><span class="tag">Conteneurs</span><span class="tag">DevOps</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name">MySQL</span>
+          <div class="skill-row-tags"><span class="tag">SQL</span><span class="tag">Relationnel</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name italic">Agile / Scrum</span>
+          <div class="skill-row-tags"><span class="tag">Jira</span><span class="tag">Trello</span><span
+              class="tag">Notion</span></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-name outline">Lead Dev</span>
+          <div class="skill-row-tags"><span class="tag">Équipe</span><span class="tag">Code Review</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE 5 — ALTERNANCE + CONTACT ══ -->
+    <div class="page page-alt" id="p4">
+      <p class="alt-eyebrow">— Master 2 · Ynov Paris · Disponible sept. 2026 —</p>
+      <h2 class="alt-title">
+        <span class="italic">En recherche</span><br>
+        <span class="outline">d'alternance</span>
+      </h2>
+      <p class="alt-sub">
+        Développeuse <strong>Frontend &amp; Mobile</strong> passionnée, je cherche un contrat d'alternance
+        <strong>2026–2027</strong> où apprendre, créer et contribuer à des projets ambitieux.
+      </p>
+      <div class="alt-domains">
+        <span class="tag">Dev Mobile</span>
+        <span class="tag">Web Frontend</span>
+        <span class="tag">UI/UX Design</span>
+        <span class="tag">React.js</span>
+        <span class="tag">Flutter</span>
+      </div>
+      <div class="alt-cta">
+        <a href="/cdn-cgi/l/email-protection#91f0fff0f8e2bff0e2e2f4bff0faf0fae1fed1f6fcf0f8fdbff2fefc"
+          class="btn btn-white">Me contacter</a>
+        <a href="https://www.linkedin.com/in/ana%C3%AFs-asse-akakpo/" target="_blank" class="btn btn-outline">LinkedIn
+          →</a>
+      </div>
+    </div>
+
+  </div><!-- /track -->
+
+  <!-- DOTS -->
+  <div class="page-dots" id="pageDots"></div>
+
+  <!-- ARROWS -->
+  <div class="nav-arrows">
+    <button class="arrow-btn" id="prevBtn">←</button>
+    <button class="arrow-btn" id="nextBtn">→</button>
   </div>
-  <div class="skill-meta" id="skillMeta">
-    <span class="skill-number" id="skillNumber"></span>
-    <div class="skill-tags" id="skillTags"></div>
-  </div>
-  <div class="cta-links" id="ctaLinks">
-    <a href="mailto:anais.asse.akakpo@gmail.com" class="cta-btn cta-btn-white">Me contacter</a>
-    <a href="https://www.linkedin.com/in/ana%C3%AFs-asse-akakpo/" target="_blank" class="cta-btn cta-btn-outline">LinkedIn →</a>
-  </div>
-</div>
 
-<div class="bg-number" id="bgNumber">01</div>
-<div class="progress-dots" id="progressDots"></div>
-<div class="section-bar" id="sectionBar"></div>
+  <div class="section-bar" id="sectionBar"></div>
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="keyboard-hint">← → pour naviguer</div>
 
-<div class="nav-arrows">
-  <button class="arrow-btn" id="prevBtn">←</button>
-  <button class="arrow-btn" id="nextBtn">→</button>
-</div>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    const PAGES = 5;
+    const AUTO_DELAY = 3000;
+    const NAV_LABELS = ['Portfolio', 'Skills &amp; Stack', 'Skills &amp; Stack', 'Skills &amp; Stack', 'Open to Work — 2026'];
 
-<div class="keyboard-hint">← → pour naviguer</div>
-<div class="progress-bar" id="progressBar"></div>
+    let current = 0, animating = false, autoTimer = null;
 
-<script>
-// ─── ALL SLIDES ───────────────────────────────────────────────────
-// section: 'skills' | 'alternance'
-const slides = [
-  // ── SKILLS ──
-  { name: "React.js",       style: "normal",       category: "— Frontend —",           tags: ["Web", "SPA", "Hooks"],              section: "skills" },
-  { name: "Next.js",        style: "outline",      category: "— Frontend —",           tags: ["SSR", "SSG", "SEO"],                section: "skills" },
-  { name: "Vue.js",         style: "italic",       category: "— Frontend —",           tags: ["Web", "Réactif"],                   section: "skills" },
-  { name: "TypeScript",     style: "normal",       category: "— Langages —",           tags: ["ES6+", "Typage"],                   section: "skills" },
-  { name: "Tailwind",       style: "outline",      category: "— CSS & Design —",       tags: ["Utility", "Responsive"],            section: "skills" },
-  { name: "Flutter",        style: "italic",       category: "— Dev Mobile —",         tags: ["iOS", "Android", "Dart"],           section: "skills" },
-  { name: "React Native",   style: "normal",       category: "— Dev Mobile —",         tags: ["Cross-platform", "JS"],             section: "skills" },
-  { name: "Dart",           style: "outline",      category: "— Langages —",           tags: ["Mobile", "Flutter"],                section: "skills" },
-  { name: "Node.js",        style: "italic",       category: "— Backend & API —",      tags: ["Express", "NestJS"],                section: "skills" },
-  { name: "Firebase",       style: "normal",       category: "— Cloud & BDD —",        tags: ["Auth", "Realtime"],                 section: "skills" },
-  { name: "REST API",       style: "outline",      category: "— Backend & API —",      tags: ["Intégration", "HTTP"],              section: "skills" },
-  { name: "MySQL",          style: "italic",       category: "— Base de données —",    tags: ["SQL", "Relationnel"],               section: "skills" },
-  { name: "Figma",          style: "normal",       category: "— Design UX/UI —",       tags: ["Maquettes", "Prototypage"],         section: "skills" },
-  { name: "UX/UI Design",   style: "italic",       category: "— Design UX/UI —",       tags: ["Centré User", "Ergonomie"],         section: "skills" },
-  { name: "Git & CI/CD",    style: "outline",      category: "— DevOps & Outils —",    tags: ["GitHub", "GitLab", "Actions"],      section: "skills" },
-  { name: "Docker",         style: "normal",       category: "— DevOps & Outils —",    tags: ["Conteneurs", "DevOps"],             section: "skills" },
-  { name: "Agile / Scrum",  style: "italic",       category: "— Méthodes —",           tags: ["Jira", "Trello", "Notion"],         section: "skills" },
-  { name: "Lead Dev",       style: "normal",       category: "— Soft Skills —",        tags: ["Équipe", "Code Review"],            section: "skills" },
+    const navLabelEl = document.getElementById('navLabel');
+    const bgNumEl = document.getElementById('bgNum');
+    const progressBarEl = document.getElementById('progressBar');
+    const sectionBarEl = document.getElementById('sectionBar');
+    const dotsEl = document.getElementById('pageDots');
 
-  // ── ALTERNANCE ──
-  { name: "En recherche",   style: "italic",       category: "— Master 2 · Ynov Paris —",     tags: ["Alternance 2026–2027"],        section: "alternance", cta: false },
-  { name: "d'alternance",   style: "outline",      category: "— Disponible sept. 2026 —",     tags: ["Dev Mobile", "Web Front", "UI/UX"], section: "alternance", cta: false },
-  { name: "Développeuse",   style: "normal",       category: "— Qui suis-je ? —",             tags: ["Frontend", "Mobile"],          section: "alternance", cta: false },
-  { name: "Frontend & Mobile", style: "italic small", category: "— Qui suis-je ? —",          tags: ["React.js", "Flutter", "Next.js"], section: "alternance", cta: false },
-  { name: "Parlons",        style: "normal",       category: "— Contactez-moi —",             tags: [],                              section: "alternance", cta: false },
-  { name: "ensemble",       style: "outline",      category: "— anais.asse.akakpo@gmail.com —", tags: [],                            section: "alternance", cta: true  },
-];
+    // Build page dots
+    for (let i = 0; i < PAGES; i++) {
+      const d = document.createElement('div');
+      d.className = 'pdot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => { goTo(i); resetAuto(); });
+      dotsEl.appendChild(d);
+    }
 
-const SECTION_LABELS = { skills: "Skills &amp; Stack", alternance: "Open to Work — 2026" };
-const AUTO_DELAY = 2000; // faster auto-advance
+    function updateDots() {
+      document.querySelectorAll('.pdot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
 
-let current = 0, animating = false, autoTimer = null;
+    function updateNav() {
+      navLabelEl.innerHTML = NAV_LABELS[current];
+      bgNumEl.textContent = String(current + 1).padStart(2, '0');
+      sectionBarEl.style.width = ((current + 1) / PAGES * 100) + '%';
+    }
 
-const skillNameEl  = document.getElementById('skillName');
-const categoryTagEl= document.getElementById('categoryTag');
-const skillNumberEl= document.getElementById('skillNumber');
-const skillTagsEl  = document.getElementById('skillTags');
-const skillMetaEl  = document.getElementById('skillMeta');
-const bgNumberEl   = document.getElementById('bgNumber');
-const progressBarEl= document.getElementById('progressBar');
-const dotsContainer= document.getElementById('progressDots');
-const ctaLinksEl   = document.getElementById('ctaLinks');
-const navLabelEl   = document.getElementById('navLabel');
-const sectionBarEl = document.getElementById('sectionBar');
-const sectionFlash = document.getElementById('sectionFlash');
+    function animateSkillRows(pageEl) {
+      const rows = pageEl.querySelectorAll('.skill-row');
+      rows.forEach(r => r.classList.remove('in'));
+      rows.forEach((r, i) => setTimeout(() => r.classList.add('in'), 80 + i * 70));
+    }
 
-// Build dots
-slides.forEach((s, i) => {
-  const d = document.createElement('div');
-  d.className = 'dot' + (i === 0 ? ' active' : '');
-  d.addEventListener('click', () => { goTo(i, i > current ? 'left' : 'right'); resetAuto(); });
-  dotsContainer.appendChild(d);
-});
+    function goTo(idx, dir) {
+      if (animating || idx === current) return;
+      animating = true;
 
-function updateDots() {
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-}
+      // determine direction if not provided
+      if (dir === undefined) dir = idx > current ? 'left' : 'right';
 
-function updateSectionBar() {
-  const skillsCount = slides.filter(s => s.section === 'skills').length;
-  const pct = current < skillsCount
-    ? ((current + 1) / skillsCount * 50)
-    : (50 + (current - skillsCount + 1) / (slides.length - skillsCount) * 50);
-  sectionBarEl.style.width = pct + '%';
-}
+      const from = document.getElementById('p' + current);
+      const to = document.getElementById('p' + idx);
 
-function applyStyle(el, styleStr) {
-  el.classList.remove('italic', 'outline', 'small');
-  if (styleStr.includes('italic'))  el.classList.add('italic');
-  if (styleStr.includes('outline')) el.classList.add('outline');
-  if (styleStr.includes('small'))   el.classList.add('small');
-}
+      const exitClass = dir === 'left' ? 'exit-left' : 'exit-right';
+      const enterClass = dir === 'left' ? 'enter-left' : 'enter-right';
 
-function showMeta(s) {
-  if (s.cta) {
-    skillMetaEl.classList.remove('visible');
-    skillMetaEl.style.display = 'none';
-    ctaLinksEl.classList.add('show');
-    setTimeout(() => ctaLinksEl.classList.add('visible'), 50);
-  } else {
-    ctaLinksEl.classList.remove('visible', 'show');
-    skillMetaEl.style.display = 'flex';
-    skillMetaEl.classList.add('visible');
-  }
-}
+      from.classList.remove('active');
+      from.classList.add(exitClass);
 
-function flashSection() {
-  sectionFlash.classList.add('show');
-  setTimeout(() => sectionFlash.classList.remove('show'), 200);
-}
+      to.classList.remove('exit-left', 'exit-right', 'enter-left', 'enter-right', 'active');
+      to.classList.add(enterClass);
 
-function renderSlide(idx) {
-  const s = slides[idx];
-  categoryTagEl.textContent = s.category;
-  applyStyle(skillNameEl, s.style);
-  skillNameEl.classList.add('visible');
-  skillNameEl.textContent = s.name;
-  skillNumberEl.textContent = `${String(idx+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-  skillTagsEl.innerHTML = (s.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-  bgNumberEl.textContent = String(idx+1).padStart(2,'0');
-  navLabelEl.innerHTML = SECTION_LABELS[s.section];
-  showMeta(s);
-  updateDots();
-  updateSectionBar();
-}
+      // force reflow
+      to.getBoundingClientRect();
 
-function goTo(idx, direction = 'left') {
-  if (animating || idx === current) return;
-  animating = true;
+      to.classList.remove(enterClass);
+      to.classList.add('active');
 
-  const crossingSection = slides[idx].section !== slides[current].section;
-  skillMetaEl.classList.remove('visible');
-  ctaLinksEl.classList.remove('visible', 'show');
+      current = idx;
+      updateDots();
+      updateNav();
 
-  const exitClass  = direction === 'left' ? 'leaving-left'  : 'leaving-right';
-  const enterClass = direction === 'left' ? 'entering-left' : 'entering-right';
+      // animate skill rows if needed
+      if (to.classList.contains('page-skills')) animateSkillRows(to);
 
-  skillNameEl.classList.remove('visible');
-  skillNameEl.classList.add(exitClass);
+      setTimeout(() => {
+        from.classList.remove(exitClass);
+        animating = false;
+      }, 210);
+    }
 
-  if (crossingSection) flashSection();
+    function next() { goTo((current + 1) % PAGES, 'left'); }
+    function prev() { goTo((current - 1 + PAGES) % PAGES, 'right'); }
 
-  setTimeout(() => {
-    current = idx;
-    const s = slides[current];
+    function startAuto() {
+      clearAuto();
+      progressBarEl.style.transition = 'none';
+      progressBarEl.style.width = '0%';
+      requestAnimationFrame(() => {
+        progressBarEl.style.transition = `width ${AUTO_DELAY}ms linear`;
+        progressBarEl.style.width = '100%';
+      });
+      autoTimer = setTimeout(() => { next(); startAuto(); }, AUTO_DELAY);
+    }
+    function clearAuto() {
+      clearTimeout(autoTimer);
+      progressBarEl.style.transition = 'none';
+      progressBarEl.style.width = '0%';
+    }
+    function resetAuto() { clearAuto(); startAuto(); }
 
-    skillNameEl.classList.remove(exitClass, 'italic', 'outline', 'small');
-    skillNameEl.classList.add(enterClass);
-    applyStyle(skillNameEl, s.style);
-    skillNameEl.textContent = s.name;
+    document.getElementById('nextBtn').addEventListener('click', () => { next(); resetAuto(); });
+    document.getElementById('prevBtn').addEventListener('click', () => { prev(); resetAuto(); });
 
-    categoryTagEl.textContent = s.category;
-    skillNumberEl.textContent = `${String(current+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'00')}`;
-    skillTagsEl.innerHTML = (s.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-    bgNumberEl.textContent = String(current+1).padStart(2,'0');
-    navLabelEl.innerHTML = SECTION_LABELS[s.section];
-    updateDots();
-    updateSectionBar();
-
-    requestAnimationFrame(() => {
-      skillNameEl.classList.remove(enterClass);
-      skillNameEl.classList.add('visible');
-      showMeta(s);
-      animating = false;
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next(); resetAuto(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { prev(); resetAuto(); }
     });
-  }, 360);
-}
 
-function next() { goTo((current + 1) % slides.length, 'left'); }
-function prev() { goTo((current - 1 + slides.length) % slides.length, 'right'); }
+    let tx = 0;
+    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+    document.addEventListener('touchend', e => {
+      const d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 50) { d > 0 ? next() : prev(); resetAuto(); }
+    });
 
-function startAuto() {
-  clearAuto();
-  progressBarEl.style.transition = 'none';
-  progressBarEl.style.width = '0%';
-  requestAnimationFrame(() => {
-    progressBarEl.style.transition = `width ${AUTO_DELAY}ms linear`;
-    progressBarEl.style.width = '100%';
-  });
-  autoTimer = setTimeout(() => { next(); startAuto(); }, AUTO_DELAY);
-}
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('button, a, .pdot').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
 
-function clearAuto() {
-  clearTimeout(autoTimer);
-  progressBarEl.style.transition = 'none';
-  progressBarEl.style.width = '0%';
-}
-
-function resetAuto() { clearAuto(); startAuto(); }
-
-document.getElementById('nextBtn').addEventListener('click', () => { next(); resetAuto(); });
-document.getElementById('prevBtn').addEventListener('click', () => { prev(); resetAuto(); });
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next(); resetAuto(); }
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { prev(); resetAuto(); }
-});
-
-let touchStartX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
-document.addEventListener('touchend', e => {
-  const diff = touchStartX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); resetAuto(); }
-});
-
-const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-});
-document.querySelectorAll('button, a, .dot').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-});
-
-// Init
-renderSlide(0);
-skillMetaEl.classList.add('visible');
-startAuto();
-</script>
+    // Lancement automatique du carrousel
+    startAuto();
+  </script>
 </body>
+
 </html>
